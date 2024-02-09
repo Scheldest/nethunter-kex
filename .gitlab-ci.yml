@@ -8,8 +8,8 @@ before_script:
 - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 - export GRADLE_USER_HOME=$(pwd)/.gradle
 - export PACKAGE="com.offsec.nethunter.kex"
-- export VERSION_NAME=`egrep '^[[:blank:]]+versionName=' ./build.gradle | awk -F '"' '{print $2}'`
-- export VERSION_CODE=`egrep '^[[:blank:]]+versionCode=' ./build.gradle | awk -F '=' '{print $2}'`
+- export VERSION_NAME=`egrep '^[[:blank:]]+versionName=' ./kex-app/build.gradle | awk -F '"' '{print $2}'`
+- export VERSION_CODE=`egrep '^[[:blank:]]+versionCode=' ./kex-app/build.gradle | awk -F '=' '{print $2}'`
 - export APK_NAME="${PACKAGE}_${VERSION_CODE}"
 - chmod +x ./gradlew
 - echo $PACKAGE
