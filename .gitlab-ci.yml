@@ -26,6 +26,7 @@ before_script:
 .assembleDebug:
   stage: build
   script:
+  - ./download-prebuilt-dependencies.sh
   - ./gradlew :kex-app:assembleDebug
   - mkdir -p result
   - ls ./kex-app/build/outputs/apk/debug/
@@ -42,6 +43,7 @@ before_script:
 .assembleRelease:
   stage: build
   script:
+  - ./download-prebuilt-dependencies.sh
   - ./gradlew :kex-app:assembleRelease
   - mkdir -p result
   - ls ./kex-app/build/outputs/apk/release/
@@ -65,8 +67,8 @@ assembleDebugAuto:
     only:
     - branches
     except:
-    - nethunter-kex
-    
+    - master
+
 assembleDebugManual:
     extends: .assembleDebug
     when: manual
@@ -75,11 +77,11 @@ assembleReleaseAuto:
     extends: .assembleRelease
     only:
     - nethunter-kex
-    
+
 assembleReleaseManual:
     extends: .assembleRelease
     when: manual
-    
+
 cache:
   key: ${CI_PROJECT_ID}
   paths:
