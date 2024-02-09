@@ -30,7 +30,7 @@ before_script:
   - ./gradlew :kex-app:assembleDebug
   - mkdir -p result
   - ls ./kex-app/build/outputs/apk/debug/
-  - mv ./kex-app/build/outputs/apk/debug/kex-debug.apk result/${APK_NAME}-debug.apk || mv ./kex-app/build/outputs/apk/debug/*-debug.apk result/${APK_NAME}-debug.apk
+  - mv ./kex-app/build/outputs/apk/debug/kex-app-debug.apk result/${APK_NAME}-debug.apk || mv ./kex-app/build/outputs/apk/debug/*-debug.apk result/${APK_NAME}-debug.apk
   - ls result/
   - if [ -d /tmp/result ]; then cp result/* /tmp/result; fi # Copy it to host if run locally 
 
@@ -39,24 +39,6 @@ before_script:
     paths:
     - ./result/*.apk
     expire_in: 1 week
-
-.assembleRelease:
-  stage: build
-  script:
-  - ./download-prebuilt-dependencies.sh
-  - ./gradlew :kex-app:assembleRelease
-  - mkdir -p result
-  - ls ./kex-app/build/outputs/apk/release/
-  - mv ./kex-app/build/outputs/apk/release/kex-app-release-unsigned.apk result/${APK_NAME}.apk || mv ./kex-app/build/outputs/apk/release/*-release-unsigned.apk result/${APK_NAME}.apk
-  - ls result/
-  - if [ -d /tmp/result ]; then cp result/* /tmp/result; fi # Copy it to host if run locally 
-  
-  artifacts:
-    name: "$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA-$CI_JOB_NAME"
-    paths:
-    - ./result/*.apk
-    expire_in: 1 week
-
 
 # Rules to build automatically:
 # Debug builds in all branches except "master"
@@ -71,15 +53,6 @@ assembleDebugAuto:
 
 assembleDebugManual:
     extends: .assembleDebug
-    when: manual
-
-assembleReleaseAuto:
-    extends: .assembleRelease
-    only:
-    - nethunter-kex
-
-assembleReleaseManual:
-    extends: .assembleRelease
     when: manual
 
 cache:
