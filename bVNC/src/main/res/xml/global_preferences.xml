@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreferenceCompat
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:key="disableImmersive"
         android:title="@string/immersive_mode_disable" />
     <SwitchPreferenceCompat
@@ -9,7 +9,7 @@
         android:key="keepScreenOn"
         android:title="@string/keep_screen_awake_enable" />
     <SwitchPreferenceCompat
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:key="forceLandscape"
         android:title="@string/landscape_force" />
     <SwitchPreferenceCompat

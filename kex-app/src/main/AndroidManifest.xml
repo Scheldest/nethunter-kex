@@ -50,6 +50,14 @@
             android:screenOrientation="unspecified"
             android:theme="@android:style/Theme.DeviceDefault"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+		<activity
+            android:name="com.iiordanov.bVNC.CustomVnc"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/bvnc_app_name"
+            android:resizeableActivity="true"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.DeviceDefault"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="com.iiordanov.bVNC.RemoteCanvasActivity"
             android:configChanges="colorMode|density|fontScale|fontWeightAdjustment|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
