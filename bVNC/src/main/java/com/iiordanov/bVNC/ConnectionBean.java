@@ -27,7 +27,7 @@ import android.util.Log;
 import android.widget.ImageView.ScaleType;
 
 import com.antlersoft.android.dbimpl.NewInstance;
-import com.iiordanov.bVNC.input.TouchInputHandlerDirectSwipePan;
+import com.iiordanov.bVNC.input.*;
 import com.iiordanov.util.NetworkUtils;
 import com.undatech.remoteClientUi.R;
 
@@ -63,7 +63,7 @@ public class ConnectionBean extends AbstractConnectionBean implements Comparable
     private boolean showOnlyConnectionNicknames = false;
 
     public ConnectionBean(Context context) {
-        String inputMode = TouchInputHandlerDirectSwipePan.ID;
+        String inputMode = TouchInputHandlerTouchpad.ID;
         Boolean preferSendingUnicode = false;
 
         if (context == null) {
@@ -72,7 +72,7 @@ public class ConnectionBean extends AbstractConnectionBean implements Comparable
 
         if (context != null) {
             inputMode = Utils.querySharedPreferenceString(context, Constants.defaultInputMethodTag,
-                    TouchInputHandlerDirectSwipePan.ID);
+                    Constants.INPUT_HANDLER_ID_DEFAULT);
             preferSendingUnicode = Utils.querySharedPreferenceBoolean(context, Constants.preferSendingUnicode);
         } else {
             android.util.Log.e(TAG, "Failed to query defaults from shared preferences, context is null.");
@@ -81,10 +81,10 @@ public class ConnectionBean extends AbstractConnectionBean implements Comparable
         showOnlyConnectionNicknames = Utils.querySharedPreferenceBoolean(context, Constants.showOnlyConnectionNicknames);
 
         set_Id(0);
-        setAddress("");
+        setAddress(Constants.DEFAULT_VNC_ADDRESS);
         setPassword("");
         setKeepPassword(true);
-        setNickname("");
+        setNickname(Constants.DEFAULT_VNC_NAME);
         setConnectionType(Constants.CONN_TYPE_PLAIN);
         setSshServer("");
         setSshPort(Constants.DEFAULT_SSH_PORT);
@@ -128,11 +128,11 @@ public class ConnectionBean extends AbstractConnectionBean implements Comparable
         setUsePortrait(false);
         setUseLocalCursor(Constants.CURSOR_AUTO);
         setRepeaterId("");
-        setExtraKeysToggleType(1);
+        setExtraKeysToggleType(Constants.EXTRA_KEYS_DEFAULT);
         setMetaListId(1);
-        setRdpResType(0);
-        setRdpWidth(0);
-        setRdpHeight(0);
+        setRdpResType(Constants.RDP_RES_TYPE_DEFAULT);
+        setRdpWidth(Constants.RDP_WIDTH_DEFAULT);
+        setRdpHeight(Constants.RDP_HEIGHT_DEFAULT);
         setRdpColor(Constants.DEFAULT_RDP_COLOR_MODE);
         setRemoteFx(false);
         setDesktopBackground(false);

@@ -2,6 +2,7 @@ include ':remoteClientLib:jni:libs:deps:FreeRDP:client:Android:Studio:freeRDPCor
 include ':pubkeyGenerator'
 include ':bVNC'
 include ':bVNC-app'
+include ':kex-app'
 include ':freebVNC-app'
 include ':aRDP-app'
 include ':freeaRDP-app'

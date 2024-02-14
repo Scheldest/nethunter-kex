@@ -201,8 +201,23 @@ public class Constants {
     public static final int CURSOR_FORCE_LOCAL = 1;
     public static final int CURSOR_FORCE_DISABLE = 2;
     public static volatile int DEFAULT_PROTOCOL_PORT = 5900;
-
     public static final String DEFAULT_VPN_URI_SCHEME = "vpn";
+
+
+
+    /**
+    * Default values for NetHunter KeX
+    */
+
+    public static final String DEFAULT_VNC_NAME = "NetHunter KeX";
+    public static final String DEFAULT_VNC_ADDRESS = "127.0.0.1:1";
+    public static boolean FORCE_LANDSCAPE_DEFAULT = true;
+    public static final int EXTRA_KEYS_DEFAULT = 0;
+    public static final int RDP_RES_TYPE_DEFAULT = 1;
+    public static final int RDP_WIDTH_DEFAULT = 1920;
+    public static final int RDP_HEIGHT_DEFAULT = 1080;
+    public static final String INPUT_HANDLER_ID_DEFAULT = "TOUCHPAD_MODE";
+
     /**
      * Returns a string matching a session selection index
      * @param index - index to convert

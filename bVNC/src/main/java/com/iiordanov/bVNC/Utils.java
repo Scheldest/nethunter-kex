@@ -257,7 +257,8 @@ public class Utils {
 
     public static boolean isVnc(Context context) {
         String packageName = Utils.pName(context);
-        return packageName.toLowerCase().contains("vnc");
+        //return packageName.toLowerCase().contains("vnc");
+        return packageName.toLowerCase().contains("kex");
     }
 
     public static boolean isRdp(Context context) {
