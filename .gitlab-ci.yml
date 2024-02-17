@@ -46,8 +46,8 @@ before_script:
   - ./download-prebuilt-dependencies.sh
   - ./gradlew :kex-app:assembleRelease
   - mkdir -p result
-  - ls ./build/outputs/apk/release/
-  - mv ./build/outputs/apk/release/kex-app-release-unsigned.apk result/${APK_NAME}.apk || mv ./kex-app/build/outputs/apk/release/*-release-unsigned.apk result/${APK_NAME}.apk
+  - ls ./kex-app/build/outputs/apk/release/
+  - mv ./kex-app/build/outputs/apk/release/kex-app-release-unsigned.apk result/${APK_NAME}.apk || mv ./kex-app/build/outputs/apk/release/*-release-unsigned.apk result/${APK_NAME}.apk
   - ls result/
   - if [ -d /tmp/result ]; then cp result/* /tmp/result; fi # Copy it to host if run locally 
   
