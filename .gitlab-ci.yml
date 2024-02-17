@@ -72,6 +72,11 @@ assembleDebugManual:
     extends: .assembleDebug
     when: manual
 
+assembleReleaseManual:
+    extends: .assembleRelease
+    when: manual
+
+
 cache:
   key: ${CI_PROJECT_ID}
   paths:
