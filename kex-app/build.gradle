@@ -8,7 +8,7 @@ android {
         minSdkVersion project.getProperties().get("SDK_VERSION")
         applicationId 'com.offsec.nethunter.kex'
         multiDexEnabled true
-        versionCode=115250
+        versionCode=11525001
         versionName='v5.2.5-1'
     }
 
