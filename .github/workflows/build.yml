@@ -3,8 +3,11 @@ name: Android CI Build
 on:
   push:
     branches:
-      - '**' # Berjalan di semua branch
-  workflow_dispatch: # Memungkinkan menjalankan manual (seperti 'when: manual')
+      - '**' 
+  workflow_dispatch:
+
+permissions:
+  contents: write # WAJIB agar bisa upload ke Release
 
 jobs:
   build:
@@ -30,13 +33,10 @@ jobs:
           PACKAGE="com.offsec.nethunter.kex"
           APK_NAME="${PACKAGE}_${VERSION_CODE}"
           
-          # Simpan ke environment GitHub
           echo "APK_NAME=${APK_NAME}" >> $GITHUB_ENV
           echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV
-          echo "Is Master: ${{ github.ref == 'refs/heads/master' }}"
 
       - name: Build Debug APK
-        # Jalankan otomatis jika BUKAN master, atau jika dijalankan manual
         if: github.ref != 'refs/heads/master' || github.event_name == 'workflow_dispatch'
         run: |
           chmod +x ./gradlew
@@ -46,14 +46,12 @@ jobs:
           mv ./kex-app/build/outputs/apk/debug/*.apk result/${{ env.APK_NAME }}-debug.apk
 
       - name: Build Release APK
-        # Jalankan hanya jika di master ATAU manual
         if: github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch'
         run: |
           chmod +x ./gradlew
           ./download-prebuilt-dependencies.sh
           ./gradlew :kex-app:assembleRelease
           mkdir -p result
-          # Mengikuti logika mv di file asli
           mv ./kex-app/build/outputs/apk/release/*-release-unsigned.apk result/${{ env.APK_NAME }}.apk || mv ./kex-app/build/outputs/apk/release/*.apk result/${{ env.APK_NAME }}.apk
 
       - name: Upload Artifacts
@@ -62,3 +60,22 @@ jobs:
           name: ${{ github.ref_name }}-${{ github.sha }}-build
           path: ./result/*.apk
           retention-days: 7
+
+      # --- BAGIAN UPLOAD KE RELEASE (TIRUAN SCRIPT TERMUX-X11) ---
+      - name: Update Nightly Release
+        uses: andelf/nightly-release@main
+        # Ganti 'Username/Repo' di bawah ini sesuai punya kamu!
+        if: github.ref == 'refs/heads/master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: nightly
+          name: 'Nightly Release $$'
+          draft: false
+          prerelease: false
+          body: |
+            This is a nightly release of the NetHunter Kex app.
+            Version: ${{ env.VERSION_NAME }}
+            Based on commit: ${{ github.sha }}
+          files: |
+            ./result/*.apk
