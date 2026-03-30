@@ -1,0 +1,64 @@
+name: Android CI Build
+
+on:
+  push:
+    branches:
+      - '**' # Berjalan di semua branch
+  workflow_dispatch: # Memungkinkan menjalankan manual (seperti 'when: manual')
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Extract Project Info
+        id: vars
+        run: |
+          # Ekstrak versi dari build.gradle
+          VERSION_NAME=$(grep 'versionName=' ./kex-app/build.gradle | awk -F '"' '{print $2}')
+          VERSION_CODE=$(grep 'versionCode=' ./kex-app/build.gradle | awk -F '=' '{print $2}')
+          PACKAGE="com.offsec.nethunter.kex"
+          APK_NAME="${PACKAGE}_${VERSION_CODE}"
+          
+          # Simpan ke environment GitHub
+          echo "APK_NAME=${APK_NAME}" >> $GITHUB_ENV
+          echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV
+          echo "Is Master: ${{ github.ref == 'refs/heads/master' }}"
+
+      - name: Build Debug APK
+        # Jalankan otomatis jika BUKAN master, atau jika dijalankan manual
+        if: github.ref != 'refs/heads/master' || github.event_name == 'workflow_dispatch'
+        run: |
+          chmod +x ./gradlew
+          ./download-prebuilt-dependencies.sh
+          ./gradlew :kex-app:assembleDebug
+          mkdir -p result
+          mv ./kex-app/build/outputs/apk/debug/*.apk result/${{ env.APK_NAME }}-debug.apk
+
+      - name: Build Release APK
+        # Jalankan hanya jika di master ATAU manual
+        if: github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch'
+        run: |
+          chmod +x ./gradlew
+          ./download-prebuilt-dependencies.sh
+          ./gradlew :kex-app:assembleRelease
+          mkdir -p result
+          # Mengikuti logika mv di file asli
+          mv ./kex-app/build/outputs/apk/release/*-release-unsigned.apk result/${{ env.APK_NAME }}.apk || mv ./kex-app/build/outputs/apk/release/*.apk result/${{ env.APK_NAME }}.apk
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.ref_name }}-${{ github.sha }}-build
+          path: ./result/*.apk
+          retention-days: 7
